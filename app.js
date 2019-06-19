@@ -1,6 +1,9 @@
 var express = require("express");
 var app = express(); 
 var port = 3000;
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
@@ -18,6 +21,16 @@ app.get("/campgrounds", function(req, res){
        res.render("campgrounds", {campgrounds: campgrounds});
 });
 
+app.post("/campgrounds", function(req, res){
+  res.send('You hit the post route')
+  // get data from form and add to campgrounds array
+  // redirect back to campgrounds page
+
+});
+
+app.get("/campgrounds/new", function(req, res){
+    res.render("new.ejs");
+});
 
 app.listen(port, () => console.log('Gator app listening on port 3000!'));
 

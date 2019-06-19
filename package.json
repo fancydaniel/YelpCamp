@@ -10,6 +10,7 @@
   "author": "Daniel Uribe",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-generator": "^4.16.1"
