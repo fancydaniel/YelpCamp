@@ -11,7 +11,8 @@ app.set("view engine", "ejs");
 // SCHEMA SETUP
 var campgroundSchema = new mongoose.Schema({
   name: String,
-  image: String
+  image: String,
+  description: String
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
@@ -19,7 +20,8 @@ var Campground = mongoose.model("Campground", campgroundSchema);
 // Campground.create(
 //   {
 //     name: "Sierra Slope",
-//     image: "https://farm6.staticflickr.com/5770/21041850120_576276328d_m.jpg"
+//     image: "https://farm6.staticflickr.com/5770/21041850120_576276328d_m.jpg",
+//     description: "This is a campground located in the Eastern Sierras in California."
 //   }, function(err, campground){
 //       if(err) {
 //         console.log(err);
@@ -40,7 +42,7 @@ app.get("/campgrounds", function(req, res){
       if(err) {
         console.log(err)
       } else {
-        res.render("campgrounds", {campgrounds: allCampgrounds});
+        res.render("index", {campgrounds: allCampgrounds});
       }
     });
 });
@@ -50,7 +52,7 @@ app.post("/campgrounds", function(req, res){
   var name = req.body.name;
   var image = req.body.image;
   var newCampground = { name: name, image: image }
-  
+
   // create a new Campground and save to DB
   Campground.create(newCampground, function(err, newlyCreated){
     if (err) {
@@ -64,6 +66,21 @@ app.post("/campgrounds", function(req, res){
 
 app.get("/campgrounds/new", function(req, res){
     res.render("new.ejs");
+});
+
+// SHOW - shows more info about one campground 
+app.get("/campgrounds/:id", function(req, res){
+  // Find the campground with provided id
+  Campground.findById(req.params.id, function(err, foundCampground){
+    if(err) {
+      console.log(err)
+    } else {
+      res.render("show", {campground: foundCampground});
+    }
+  });
+  
+  // render show template with that campground
+  
 });
 
 app.listen(port, () => console.log('Gator app listening on port 3000!'));
