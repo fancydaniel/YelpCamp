@@ -6,26 +6,10 @@ var express = require("express"),
     Campground = require('./models/campground'),
     seedDB    = require('./seeds');
 
-seedDB();
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-
-
-// Campground.create(
-//   {
-//     name: "Sierra Slope",
-//     image: "https://farm6.staticflickr.com/5770/21041850120_576276328d_m.jpg",
-//     description: "This is a campground located in the Eastern Sierras in California."
-//   }, function(err, campground){
-//       if(err) {
-//         console.log(err);
-//       } else {
-//         console.log("NEWLY CREATED CAMPGROUND!");
-//         console.log(campground);
-//       }
-//     }
-//   );
+seedDB();
 
 app.get("/", function(req, res){
    res.render("landing");
@@ -67,10 +51,11 @@ app.get("/campgrounds/new", function(req, res){
 // SHOW - shows more info about one campground 
 app.get("/campgrounds/:id", function(req, res){
   // Find the campground with provided id
-  Campground.findById(req.params.id, function(err, foundCampground){
+  Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
     if(err) {
       console.log(err)
     } else {
+      console.log(foundCampground);
       res.render("show", {campground: foundCampground});
     }
   });
